@@ -1,7 +1,7 @@
 .correct-letter {
-    background-color: orange;
+    background-color: rgb(206, 48, 0);
 }
 
 .correct-position {
-    background-color: green;
+    background-color: rgb(4, 119, 185);
 }
