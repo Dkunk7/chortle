@@ -47,6 +47,7 @@ function displayResult(guess, word) {
             }
         }
     }
+    guess = "";
 }
 
 // function getWord() {
@@ -63,10 +64,20 @@ function displayResult(guess, word) {
 
 let count = 0;
 
+document.onkeyup = function(event) {
+    // console.log(submitBtn);
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        submitBtn.click();
+    } else if (!event.keyCode) {
+        console.log("failure")
+    }
+}
 submitBtn.addEventListener("click", function() {
     count++
-    const guess = document.querySelector("#guess").value;
+    let guess = document.querySelector("#guess").value;
     console.log(guess + " | " + word);
-
+    
     displayResult(guess, word, count)
+    document.querySelector("#guess").value = ""
 })
