@@ -342,8 +342,8 @@ words.wordList = wordList;
 
 },{}],2:[function(require,module,exports){
 // TODO:
-// Make text box clear after every guess
-// Limit guesses to 6 tries
+// Make text box clear after every guess - DONE
+// Limit guesses to 6 tries - DONE
 // Require 5 letter guesses
 // Idk how but it'd be nice if you could only submit actual words as a guess (I don't think randomWords has enough words for that to be totally reliable)
 // vvvvv
@@ -418,10 +418,15 @@ document.onkeyup = function(event) {
 }
 submitBtn.addEventListener("click", function() {
     count++
-    let guess = document.querySelector("#guess").value;
-    console.log(guess + " | " + word);
-    
-    displayResult(guess, word, count)
-    document.querySelector("#guess").value = ""
+    if (count < 7) {
+        let guess = document.querySelector("#guess").value;
+        console.log(guess + " | " + word);
+        if (guess.length === 5) {
+            displayResult(guess, word, count)
+            document.querySelector("#guess").value = ""      
+        } else {
+            console.log("Only 5 letter words are allowed");
+        }
+    } else return;
 })
 },{"random-words":1}]},{},[2]);
