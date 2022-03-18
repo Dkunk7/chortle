@@ -344,7 +344,7 @@ words.wordList = wordList;
 // TODO:
 // Make text box clear after every guess - DONE
 // Limit guesses to 6 tries - DONE
-// Require 5 letter guesses
+// Require 5 letter guesses - DONE
 // Idk how but it'd be nice if you could only submit actual words as a guess (I don't think randomWords has enough words for that to be totally reliable)
 // vvvvv
 // Maybe use dictionary API --> If the API returns a definition, it's a word
@@ -353,6 +353,7 @@ words.wordList = wordList;
 const randomWords = require(`random-words`);
 // const axios = require(`axios`).default;
 const submitBtn = document.querySelector(".submit");
+// NOTE: Use this command to regenerate the bundle.js file so that require functions on the browser --> browserify script.js -o bundle.js
 
 // console.log(randomWords({ exactly: 1, maxLength: 5}))
 function displayResult(guess, word) {
@@ -394,11 +395,14 @@ function displayResult(guess, word) {
 }
 
 // function getWord() {
-    let word = randomWords({exactly: 1, maxLength: 5});
-    // console.log(word);
+    let preWord = randomWords({exactly: 1, maxLength: 5}).toString();
+    let word = preWord.toUpperCase();
+
+    console.log(word + " word test");
     // console.log(word[0].length)
-    while (word[0].length < 5) {
-        word = randomWords({exactly: 1, maxLength: 5});
+    while (word.length < 5) {
+        preWord = randomWords({exactly: 1, maxLength: 5}).toString();
+        word = preWord.toUpperCase();
         console.log(word + " in loop")
     }
 
@@ -419,13 +423,15 @@ document.onkeyup = function(event) {
 submitBtn.addEventListener("click", function() {
     count++
     if (count < 7) {
-        let guess = document.querySelector("#guess").value;
+        let guess = document.querySelector("#guess").value.toUpperCase();
+        // console.log(guess + " test X")
         console.log(guess + " | " + word);
         if (guess.length === 5) {
             displayResult(guess, word, count)
             document.querySelector("#guess").value = ""      
         } else {
             console.log("Only 5 letter words are allowed");
+            // NOTE: Make this display a message on the page later
         }
     } else return;
 })

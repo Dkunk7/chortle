@@ -5,3 +5,7 @@
 .correct-position {
     background-color: rgb(4, 119, 185);
 }
+
+#guess {
+    text-transform: uppercase;
+}

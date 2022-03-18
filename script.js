@@ -52,11 +52,14 @@ function displayResult(guess, word) {
 }
 
 // function getWord() {
-    let word = randomWords({exactly: 1, maxLength: 5});
-    // console.log(word);
+    let preWord = randomWords({exactly: 1, maxLength: 5}).toString();
+    let word = preWord.toUpperCase();
+
+    console.log(word + " word test");
     // console.log(word[0].length)
-    while (word[0].length < 5) {
-        word = randomWords({exactly: 1, maxLength: 5});
+    while (word.length < 5) {
+        preWord = randomWords({exactly: 1, maxLength: 5}).toString();
+        word = preWord.toUpperCase();
         console.log(word + " in loop")
     }
 
@@ -77,7 +80,8 @@ document.onkeyup = function(event) {
 submitBtn.addEventListener("click", function() {
     count++
     if (count < 7) {
-        let guess = document.querySelector("#guess").value;
+        let guess = document.querySelector("#guess").value.toUpperCase();
+        // console.log(guess + " test X")
         console.log(guess + " | " + word);
         if (guess.length === 5) {
             displayResult(guess, word, count)
