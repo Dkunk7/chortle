@@ -345,6 +345,7 @@ words.wordList = wordList;
 // Make text box clear after every guess - DONE
 // Limit guesses to 6 tries - DONE
 // Require 5 letter guesses - DONE
+// Make all word-related stuff uppercase only - DONE
 // Idk how but it'd be nice if you could only submit actual words as a guess (I don't think randomWords has enough words for that to be totally reliable)
 // vvvvv
 // Maybe use dictionary API --> If the API returns a definition, it's a word
@@ -428,11 +429,12 @@ submitBtn.addEventListener("click", function() {
         console.log(guess + " | " + word);
         if (guess.length === 5) {
             displayResult(guess, word, count)
-            document.querySelector("#guess").value = ""      
+            document.querySelector("#guess").value = ""    
         } else {
             console.log("Only 5 letter words are allowed");
             // NOTE: Make this display a message on the page later
         }
-    } else return;
+    } else return document.querySelector(".end-response").textContent = `The word was ${word}`;
+    
 })
 },{"random-words":1}]},{},[2]);
