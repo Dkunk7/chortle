@@ -1,0 +1,11 @@
+.correct-letter {
+    background-color: rgb(206, 48, 0);
+}
+
+.correct-position {
+    background-color: rgb(4, 119, 185);
+}
+
+#guess {
+    text-transform: uppercase;
+}
