@@ -37,7 +37,11 @@ body {
     display: flex; /* Changing the display from what it is in keyboard(the parent) means you need to rejustify/align, as shown below vv */
     justify-content: center;
     align-items: center;
-    background-color: /* Actual Wordle color --> */ hsl(200, 1%, 51%);
+    background-color: /* Actual Wordle color --> hsl(200, 1%, 51%) */ hsl(
+        var(--hue, 200), /* Second value is the default */
+        var(--saturation, 1%),
+        calc(var(--lightness-offset, 0%) + var(--lightness, 51%)) /* offset is 0 by default; allows offset to be changed to dynamically change the lightness of a key */
+    );
     color: white;
     fill: white; /* This is for the svg on the delete key */
     text-transform: uppercase;
@@ -53,4 +57,24 @@ body {
 .key > svg { /* This selects the svg within objects with the class of key (note that there is only one svg in this case) */
     width: 1.75em; /* Make the delete svg slightly larger */
     height: 1.75em;
+}
+
+.key:hover, .key:focus {
+    --lightness-offset: 10%; /* Make key 10% lighter when hovered or focused */
+}
+
+.key.wrong { /* Define wrong, wrong-pos, and correct in that order --> correct key should override wrong-pos key, etc */
+    --lightness: 23%;
+}
+
+.key.wrong-position {
+    --hue: 49;
+    --saturation: 51%;
+    --lightness: 47%;
+}
+
+.key.correct {
+    --hue: 115;
+    --saturation: 29%;
+    --lightness: 43%;
 }
