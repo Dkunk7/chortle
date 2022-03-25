@@ -15291,6 +15291,7 @@ const dictionary = [
 ]
 const wordLength = 5
 const flipAnimationDuration = 500
+const danceAnimationDuration = 500
 const keyboard = document.querySelector("[data-keyboard]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const guessGrid = document.querySelector("[data-guess-grid]");
@@ -15411,10 +15412,10 @@ function flipTiles(tile, index, array, guess) {
         if (index === array.length - 1) { // Starts new "round" of guessing if the last letter has been assessed
             tile.addEventListener("transitionend", () => { // Wont continue until the flip removal is complete
                 startInteraction()
-                // checkWinLose(guess, array)
-            })
+                checkWinLose(guess, array)
+            }, { once: true })
         }
-    })
+    }, { once: true })
 }
 
 function getActiveTiles() {
@@ -15442,5 +15443,31 @@ function shakeTiles(tiles) {
         tile.addEventListener("animationend", () => { // Remove shake class when animation ends
             tile.classList.remove("shake")
         }, { once: true }) // Makes it run only once
+    })
+}
+
+function checkWinLose(guess, tiles) {
+    if (guess === targetWord) {
+        showAlert("You win", 5000)
+        danceTiles(tiles)
+        stopInteraction()
+        return
+    }
+
+    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
+    if (remainingTiles.length === 0) {
+        showAlert(targetWord.toUpperCase(), null) // Null is for indefinite alert time length
+        stopInteraction()
+    }
+}
+
+function danceTiles(tiles) {
+    tiles.forEach((tile, index) => {
+        setTimeout(() => {
+            tile.classList.add("dance")
+            tile.addEventListener("animationend", () => { // Remove dance class when animation ends
+                tile.classList.remove("dance")
+            }, { once: true }) // Makes it run only once
+        }, (index * danceAnimationDuration) / 5)
     })
 }
