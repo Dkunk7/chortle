@@ -15290,6 +15290,8 @@ const dictionary = [
     "shave"
 ]
 const wordLength = 5
+const flipAnimationDuration = 500
+const keyboard = document.querySelector("[data-keyboard]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const guessGrid = document.querySelector("[data-guess-grid]");
 const offsetFromDate = new Date(2022, 0, 1)
@@ -15370,6 +15372,49 @@ function submitGuess() {
         shakeTiles(activeTiles)
         return
     }
+
+    const guess = activeTiles.reduce((word, tile) => { // This takes each letter and adds it to the end of the "word" (which starts as an empty string here)
+        return word + tile.dataset.letter
+    }, "") // Start word as empty string
+    // console.log(guess)
+
+    if (!dictionary.includes(guess)) {
+        showAlert("Not in word list")
+        shakeTiles(activeTiles)
+        return
+    }
+
+    stopInteraction() // Stops user from doing anything while the tile flip animation happens
+    activeTiles.forEach((...params) => flipTiles(...params, guess))
+}
+
+function flipTiles(tile, index, array, guess) {
+    const letter = tile.dataset.letter
+    const key = keyboard.querySelector(`[data-key="${letter}"i]`) // Selects individual keys -- NOTE: the "i" towards the end makes this CASE INSENSITIVE
+    setTimeout(() => {
+        tile.classList.add("flip")
+    }, index * flipAnimationDuration / 2) // Each tile will flip once the previous one is halfway done
+
+    tile.addEventListener("transitionend", () => { // Removing the class will cause it to revert (with animation)
+        tile.classList.remove("flip")
+        if (targetWord[index] === letter) {
+            tile.dataset.state = "correct"
+            key.classList.add("correct")
+        } else if (targetWord.includes(letter)) {
+            tile.dataset.state = "wrong-position"
+            key.classList.add("wrong-location")
+        } else {
+            tile.dataset.state = "wrong"
+            key.classList.add("wrong")
+        }
+
+        if (index === array.length - 1) { // Starts new "round" of guessing if the last letter has been assessed
+            tile.addEventListener("transitionend", () => { // Wont continue until the flip removal is complete
+                startInteraction()
+                // checkWinLose(guess, array)
+            })
+        }
+    })
 }
 
 function getActiveTiles() {

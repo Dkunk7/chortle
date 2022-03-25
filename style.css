@@ -100,6 +100,7 @@ body {
     justify-content: center;
     align-items: center;
     user-select: none;
+    transition: transform 250ms; /* Flip time is 500ms in game.js because this animation is occuring twice per tile (flip up and back down) */
 }
 
 /* Maybe customize most/all of the tile colors n stuff */
@@ -127,6 +128,10 @@ body {
     animation: shake 250ms ease-in-out
 }
 
+.tile.flip {
+    transform: rotateX(90deg); /* Rotate 90deg over the x-axis. This makes a 2D square become flat and essentially invisible */
+}
+
 @keyframes shake {
     10% {
         transform: translateX(-5%);
@@ -145,7 +150,7 @@ body {
     }
 
     90% {
-        transform: translateX(5%);
+        transform: translateX(-5%);
     }
 
     100% {
